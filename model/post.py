@@ -1,6 +1,8 @@
-class Post:
+from datetime import date
+from model.user import User
+class Text:
 
-    def __init__(self, text: str, author: User, day: date):
+    def __init__(self, text: str, author: User):
         self.text = text
         self.author = author
-        self.day = day
+        self.day = date.today()
