@@ -14,10 +14,9 @@ API_ROOT = '/api/blog'
 class MyJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Post):
-            return {"text": obj.text, "author": obj.author, "day": obj.day.isoformat()}
+            return {"text": obj.text, "author": obj.author, "day": obj.day.isoformat(), "comments": obj.comments}
         elif isinstance(obj, Comment):
             return {"author": obj.author, "comment": obj.comment_body, "day": obj.day.isoformat()}
-        #elif isinstance(obj, storage.Storage):
         else:
             return super().default(obj)
 
@@ -56,22 +55,16 @@ def delete_post(post_id: str):
         return f'{ex}'
 
 
+@app.route(API_ROOT + '/post/<post_id>/', methods=['POST'])  #создаем коммент к посту
+def create_comment(post_id: str):
+    try:
+        comment_json = request.get_json()   #декодируем в словарь   body: {"text": "Excellent!", "author": "Grisha"}
+        comment = Comment(comment_json['text'], comment_json['author'], post_id)
+        my_storage.create_comment(post_id, comment)
+        return jsonify({'status': 'success', 'message': f'comment to the post: {post_id} created'})
+    except Exception as ex:
+        return f'{ex}'
 
-#@app.route(API_ROOT + '/post/<post_id>/', methods=['POST'])
-#def create_comment(post_id):
-#    comment_json = request.get_json()
-#    comment = Comment(comment_json['author'], comment_json['comment_body'])
- #   dict_posts[comment_json['text']]['comments'].append(comment)
-  #  return jsonify({'status': 'success'})
-
-
-
-
-
-
-#@app.route(API_ROOT + '/post/comment/', methods=['GET'])
-#def read_comments():
-#    return jsonify({'all_data': my_storage})
 
 if __name__ == '__main__':
     app.run(debug=True)

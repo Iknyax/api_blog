@@ -7,3 +7,4 @@ class Post:
         self.text = text
         self.author = author
         self.day = date.today()
+        self.comments = []
