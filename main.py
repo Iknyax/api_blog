@@ -46,6 +46,17 @@ def read_all_posts():
     return jsonify(my_storage.read_all_posts())
 
 
+
+@app.route(API_ROOT + '/post/<post_id>/', methods=['PUT'])  #редактируем пост
+def edit_post(post_id: str):
+    try:
+        post_json = request.get_json()   #декодируем в словарь    body: {"text": "Excellent!", "author": "Grisha"}
+        post = Post(post_json['text'], post_json['author'])
+        my_storage.edit_post(post_id, post)
+        return jsonify({'status': 'success', 'message': f'id {post.id} edited'})
+    except Exception as ex:
+        return f'{ex}'
+
 @app.route(API_ROOT + '/post/<post_id>/', methods=['DELETE'])   #удаляем пост
 def delete_post(post_id: str):
     try:

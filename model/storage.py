@@ -29,6 +29,12 @@ class Storage:
         return self.dict
 
 
+    def edit_post(self, post_id: str, post: Post):    #перезаписываем пост
+        if post_id in self.dict:
+            self.dict[str(post_id)] = post
+        else:
+            raise StorageException('no such post')
+
 
     def delete_post(self, post_id: str):     #Удаляем пост
         try:
