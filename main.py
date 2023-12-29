@@ -27,7 +27,7 @@ app.json_encoder = MyJSONEncoder
 
 @app.route(API_ROOT + '/post/', methods=['POST'])  #создаем пост
 def create_post():
-    post_json = request.get_json()   #декодируем в словарь   body: {"text": "Excellent!", "author": "Grisha"}
+    post_json = request.get_json()   #декодируем в словарь   body: {"text": "Hello, friends!", "author": "Igor"}
     post = Post(post_json['text'], post_json['author'])
     post.id = my_storage.create_post(post)
     return jsonify({'status': 'success', 'message': f'id {post.id} created'})
@@ -50,7 +50,7 @@ def read_all_posts():
 @app.route(API_ROOT + '/post/<post_id>/', methods=['PUT'])  #редактируем пост
 def edit_post(post_id: str):
     try:
-        post_json = request.get_json()   #декодируем в словарь    body: {"text": "Excellent!", "author": "Grisha"}
+        post_json = request.get_json()   #декодируем в словарь    body: {"text": "Excellent!", "author": "Igor"}
         post = Post(post_json['text'], post_json['author'])
         my_storage.edit_post(post_id, post)
         return jsonify({'status': 'success', 'message': f'id {post.id} edited'})
@@ -69,7 +69,7 @@ def delete_post(post_id: str):
 @app.route(API_ROOT + '/post/<post_id>/', methods=['POST'])  #создаем коммент к посту
 def create_comment(post_id: str):
     try:
-        comment_json = request.get_json()   #декодируем в словарь   body: {"text": "Excellent!", "author": "Grisha"}
+        comment_json = request.get_json()   #декодируем в словарь   body: {"text": "Excellent!", "author": "Igor"}
         comment = Comment(comment_json['text'], comment_json['author'], post_id)
         my_storage.create_comment(post_id, comment)
         return jsonify({'status': 'success', 'message': f'comment to the post: {post_id} created'})
